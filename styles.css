@@ -46,3 +46,6 @@ button:hover { background: var(--primary-dark); }
 .editor-card { border: 1px solid var(--border); border-radius: 18px; padding: 1rem; display: grid; gap: .75rem; }
 .editor-card-header { display: flex; justify-content: space-between; align-items: center; }
 @media (max-width: 760px) { .layout, .import-panel, .editor-panel { display: block; } .panel { margin-bottom: 1rem; } .settings-grid { grid-template-columns: 1fr; } .app-header { align-items: flex-start; flex-direction: column; } }
+.mapping-panel { border: 1px solid var(--border); border-radius: 16px; margin-top: 1rem; padding: 1rem; background: #f9fbff; }
+.mapping-panel h3 { margin-top: 0; }
+.search-box { display: block; margin-bottom: 1rem; }

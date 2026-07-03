@@ -18,15 +18,34 @@
     <main class="layout">
       <section class="panel import-panel" aria-labelledby="import-title">
         <h2 id="import-title">1. CSVを読み込む</h2>
-        <p>CSVは「表,裏」または「question,answer,image」の列に対応します。読み込んだカードと設定はブラウザに保存され、次回アクセス時に自動復元されます。</p>
+        <p>CSVを読み込んだあと、どの列を「表」「裏」「写真」にするか選択できます。読み込んだカード・デッキ・設定はブラウザに保存され、次回アクセス時に自動復元されます。</p>
         <label class="file-drop">
           <input id="csvFile" type="file" accept=".csv,text/csv" />
           <span>CSVファイルを選択</span>
         </label>
         <textarea id="csvText" rows="5" placeholder="例：&#10;日本の首都,東京&#10;2 + 2,4"></textarea>
         <div class="actions">
-          <button id="loadTextCsv" type="button">テキストから読み込む</button>
+          <button id="loadTextCsv" type="button">CSVを解析して列を選択</button>
           <button id="addBlankCard" class="secondary" type="button">空のカードを追加</button>
+        </div>
+        <div id="csvMapping" class="mapping-panel hidden">
+          <h3>CSV列の割り当て</h3>
+          <div class="settings-grid">
+            <label>追加先デッキ
+              <input id="importDeckName" type="text" value="未分類" />
+            </label>
+            <label>表にする列
+              <select id="frontColumn"></select>
+            </label>
+            <label>裏にする列
+              <select id="backColumn"></select>
+            </label>
+            <label>写真URL/Data URLの列
+              <select id="imageColumn"></select>
+            </label>
+          </div>
+          <p id="csvPreview" class="status"></p>
+          <button id="importMappedCsv" type="button">この割り当てで読み込む</button>
         </div>
         <p id="storageStatus" class="status" role="status"></p>
       </section>
@@ -34,6 +53,9 @@
       <section class="panel settings-panel" aria-labelledby="settings-title">
         <h2 id="settings-title">2. 出題設定</h2>
         <div class="settings-grid">
+          <label>デッキ
+            <select id="deckFilter"></select>
+          </label>
           <label>開始番号
             <input id="rangeStart" type="number" min="1" value="1" />
           </label>
@@ -85,6 +107,9 @@
           <h2 id="editor-title">4. カード編集</h2>
           <span id="cardCount" class="pill">0枚</span>
         </div>
+        <label class="search-box">カード検索
+          <input id="cardSearch" type="search" placeholder="表・裏・デッキ名で検索" />
+        </label>
         <div id="cardList" class="card-list"></div>
       </section>
     </main>
@@ -95,6 +120,7 @@
           <strong class="card-number"></strong>
           <button class="delete-card ghost danger" type="button">削除</button>
         </div>
+        <label>デッキ<input class="deck-input" type="text" /></label>
         <label>表<input class="front-input" type="text" /></label>
         <label>裏<input class="back-input" type="text" /></label>
         <label>写真<input class="image-input" type="file" accept="image/*" /></label>

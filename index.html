@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>暗記カード Web</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">CSV対応・自動保存</p>
+        <h1>暗記カード Web</h1>
+      </div>
+      <button id="resetAll" class="ghost danger" type="button">保存データを削除</button>
+    </header>
+
+    <main class="layout">
+      <section class="panel import-panel" aria-labelledby="import-title">
+        <h2 id="import-title">1. CSVを読み込む</h2>
+        <p>CSVは「表,裏」または「question,answer,image」の列に対応します。読み込んだカードと設定はブラウザに保存され、次回アクセス時に自動復元されます。</p>
+        <label class="file-drop">
+          <input id="csvFile" type="file" accept=".csv,text/csv" />
+          <span>CSVファイルを選択</span>
+        </label>
+        <textarea id="csvText" rows="5" placeholder="例：&#10;日本の首都,東京&#10;2 + 2,4"></textarea>
+        <div class="actions">
+          <button id="loadTextCsv" type="button">テキストから読み込む</button>
+          <button id="addBlankCard" class="secondary" type="button">空のカードを追加</button>
+        </div>
+        <p id="storageStatus" class="status" role="status"></p>
+      </section>
+
+      <section class="panel settings-panel" aria-labelledby="settings-title">
+        <h2 id="settings-title">2. 出題設定</h2>
+        <div class="settings-grid">
+          <label>開始番号
+            <input id="rangeStart" type="number" min="1" value="1" />
+          </label>
+          <label>終了番号
+            <input id="rangeEnd" type="number" min="1" value="1" />
+          </label>
+          <label>出題順
+            <select id="orderMode">
+              <option value="sequential">順番通り</option>
+              <option value="random">ランダム</option>
+              <option value="weakFirst">苦手優先</option>
+            </select>
+          </label>
+          <label>出題面
+            <select id="directionMode">
+              <option value="frontToBack">表 → 裏</option>
+              <option value="backToFront">裏 → 表</option>
+              <option value="mixed">毎回ランダム</option>
+            </select>
+          </label>
+        </div>
+        <button id="startQuiz" type="button">この範囲で開始</button>
+      </section>
+
+      <section class="panel quiz-panel" aria-labelledby="quiz-title">
+        <div class="section-title-row">
+          <h2 id="quiz-title">3. 出題</h2>
+          <span id="progressText" class="pill">0 / 0</span>
+        </div>
+        <article class="flash-card" id="flashCard">
+          <p id="questionLabel" class="card-label">問題</p>
+          <div id="questionText" class="card-text">CSVを読み込んでください</div>
+          <img id="cardImage" class="card-image hidden" alt="カード画像" />
+          <button id="showAnswer" type="button">答えを見る</button>
+          <div id="answerArea" class="answer hidden">
+            <p class="card-label">答え</p>
+            <div id="answerText" class="card-text"></div>
+            <div class="actions center">
+              <button id="markGood" class="success" type="button">覚えた</button>
+              <button id="markAgain" class="warning" type="button">もう一度</button>
+              <button id="nextCard" type="button">次へ</button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel editor-panel" aria-labelledby="editor-title">
+        <div class="section-title-row">
+          <h2 id="editor-title">4. カード編集</h2>
+          <span id="cardCount" class="pill">0枚</span>
+        </div>
+        <div id="cardList" class="card-list"></div>
+      </section>
+    </main>
+
+    <template id="cardEditorTemplate">
+      <article class="editor-card">
+        <div class="editor-card-header">
+          <strong class="card-number"></strong>
+          <button class="delete-card ghost danger" type="button">削除</button>
+        </div>
+        <label>表<input class="front-input" type="text" /></label>
+        <label>裏<input class="back-input" type="text" /></label>
+        <label>写真<input class="image-input" type="file" accept="image/*" /></label>
+        <img class="preview hidden" alt="追加した写真のプレビュー" />
+        <button class="remove-image secondary" type="button">写真を削除</button>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
